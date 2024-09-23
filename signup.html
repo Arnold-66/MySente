@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="styles.css" rel="stylesheet">
+    <title>Sign up</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+    <div class="main1">
+        <img class="logo" src="assets/1.PNG" alt="KampusKonect logo">
+        <p class="p1">Sign up to MySente</p>
+        <form action="#" class="form1" method="post">
+            <label for="email">Email</label>
+            <input id="email" type="email" class="email" required>
+           
+            <label for="password">Password</label>
+            <input id="password" type="password" class="password" required>
+           
+            <label for="confirm-password">Confirm Password</label>
+            <input id="confirm-password" type="password" class="password" required>
+           
+            <input type="submit" class="submit" value="Submit">
+        </form>
+        <div class="sgnopt">
+            <!-- Google Sign-In button -->
+            <div id="g_id_onload"
+                 data-client_id="YOUR_GOOGLE_CLIENT_ID"
+                 data-context="signup"
+                 data-ux_mode="popup"
+                 data-login_uri="YOUR_BACKEND_URL"
+                 data-auto_prompt="false">
+            </div>
+            <div class="g_id_signin"
+                 data-type="standard"
+                 data-shape="rectangular"
+                 data-theme="outline"
+                 data-text="signup_with"
+                 data-size="large">
+            </div>
+            <p class="dont">Already have an account? <a href="login.html">Sign in</a></p>
+        </div>
+    </div>
+
+    <script>
+        function handleCredentialResponse(response) {
+            console.log("Encoded JWT ID token: " + response.credential);
+            // Send the JWT to your backend for verification
+            // Example: You can use fetch to send the token to your server
+            fetch('/your-backend-endpoint', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ token: response.credential })
+            }).then(response => {
+                // Handle response
+            }).catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+        window.onload = function () {
+            google.accounts.id.initialize({
+                client_id: "YOUR_GOOGLE_CLIENT_ID",
+                callback: handleCredentialResponse
+            });
+            google.accounts.id.renderButton(
+                document.querySelector('.g_id_signin'),
+                { theme: "outline", size: "large" } // Customization options
+            );
+            google.accounts.id.prompt(); // Optional automatic sign-in prompt
+        };
+    </script>
+</body>
+</html> 

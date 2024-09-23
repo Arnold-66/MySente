@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="styles.css" rel="stylesheet">
+    <title>Sign in</title>
+    <!-- Google Sign-In Library -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+    <div class="main1">
+        <img class="logo" src="assets/1.PNG" alt="KampusKonect Logo">
+        <p class="p1">Sign in to MySente</p>
+        <form action="#" class="form" method="post">
+            <label for="email">Email</label>
+            <input id="email" type="email" name="email" class="email" required>
+           
+            <label for="password" class="passwordl">
+                Password
+                <a href="fpass.html"><span>Forgot Password?</span></a>
+            </label>
+            <input id="password" type="password" name="password" class="password" required>
+           
+            <input type="submit" class="submit" value="Submit">
+        </form>
+
+        <div class="sgnopt">
+            <!-- Google Sign-In Button -->
+            <div id="g_id_onload"
+                 data-client_id="YOUR_GOOGLE_CLIENT_ID"
+                 data-context="signin"
+                 data-ux_mode="popup"
+                 data-login_uri="YOUR_BACKEND_URL"
+                 data-auto_prompt="false">
+            </div>
+            <div class="g_id_signin" 
+                 data-type="standard" 
+                 data-shape="rectangular" 
+                 data-theme="outline" 
+                 data-text="signin_with" 
+                 data-size="large">
+            </div>
+            
+            <p class="dont">New to KampusKonect? <a href="signup.html">Create account</a></p>
+        </div>
+    </div>
+
+    <script>
+        function handleCredentialResponse(response) {
+            console.log("Encoded JWT ID token: " + response.credential);
+            // Send the JWT to your backend for verification
+            fetch('/your-backend-endpoint', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ token: response.credential })
+            }).then(response => {
+                // Handle response
+            }).catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+        window.onload = function () {
+            google.accounts.id.initialize({
+                client_id: "YOUR_GOOGLE_CLIENT_ID",
+                callback: handleCredentialResponse
+            });
+            google.accounts.id.renderButton(
+                document.querySelector('.g_id_signin'),
+                { theme: "outline", size: "large" } // Customize Google Sign-In button
+            );
+            google.accounts.id.prompt(); // Optional prompt for auto sign-in
+        };
+    </script>
+</body>
+</html>
